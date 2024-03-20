@@ -6,7 +6,8 @@ import torchvision.transforms as transforms
 from sklearn import metrics
 from .solver import solve_isotropic_covariance, symKL_objective
 import math
-import ruamel.yaml as yaml
+# import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 import torch.nn as nn
 
 
@@ -115,7 +116,6 @@ def compute_correct_prediction(*, y_targets, y_prob_preds, threshold=0.5):
 def gradient_masking(g):
     # add scalar noise to align with the maximum norm in the batch
     # (expectation norm alignment)
-    # yjr:这里的输入不明确但可以确定的是g[0][0]的shape是[batch_size, dim]
 
     g_norm = torch.norm(g, p=2, dim=1)
     max_norm = torch.max(g_norm)
@@ -273,8 +273,10 @@ def over_write_args_from_file(args, yml):
     """
     if yml == '':
         return
+    yaml = YAML(typ='rt')
     with open(yml, 'r', encoding='utf-8') as f:
-        dic = yaml.load(f.read(), Loader=yaml.Loader)
+        # dic = yaml.load(f.read(), Loader=yaml.Loader)
+        dic = yaml.load(f)
         for k in dic:
             setattr(args, k, dic[k])
 

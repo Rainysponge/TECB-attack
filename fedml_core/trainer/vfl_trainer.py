@@ -53,9 +53,9 @@ def split_data(data, args):
     elif args.dataset == 'TinyImageNet':
         x_a = data[:, :, :, 0:args.half]
         x_b = data[:, :, :, args.half:64]
-    elif args.dataset == 'Criteo':
-        x_b = data[:, args.half:D_]
-        x_a = data[:, 0:args.half]
+    # elif args.dataset == 'Criteo':
+    #     x_b = data[:, args.half:D_]
+    #     x_a = data[:, 0:args.half]
     elif args.dataset == 'BCW':
         x_b = data[:, args.half:28]
         x_a = data[:, 0:args.half]
@@ -323,7 +323,6 @@ class VFLTrainer(ModelTrainer):
             if args.marvell:
                 grad_output_bottom_model_b = marvell_g(grad_output_bottom_model_b, target)
 
-            # ----yjr-----
             # gradient compression
             if args.gc:
                 grad_output_bottom_model_b = gradient_compression(grad_output_bottom_model_b,
@@ -559,10 +558,10 @@ class VFLTrainer(ModelTrainer):
         asr_top1_acc = 100. * asr_correct / total
         asr_top5_acc = 100. * asr_top5_correct / total
 
-        print(
-            'CoPur Test set: ASR Top-1 Accuracy: {}/{} ({:.4f}%), ASR Top-5 Accuracy: {}/{} ({:.4f}%)'
-            .format(
-                asr_correct, total, asr_top1_acc, asr_top5_correct, total, asr_top5_acc))
+        # print(
+        #     'CoPur Test set: ASR Top-1 Accuracy: {}/{} ({:.4f}%), ASR Top-5 Accuracy: {}/{} ({:.4f}%)'
+        #     .format(
+        #         asr_correct, total, asr_top1_acc, asr_top5_correct, total, asr_top5_acc))
 
         return asr_top1_acc, asr_top5_acc
 
@@ -904,7 +903,7 @@ class VFLTrainer(ModelTrainer):
             # add marvell noise
             if args.marvell:
                 grad_output_bottom_model_b = marvell_g(grad_output_bottom_model_b, target)
-            # ----yjr-----
+
             # gradient compression
             if args.gc:
                 grad_output_bottom_model_b = gradient_compression(grad_output_bottom_model_b,
@@ -1085,7 +1084,7 @@ class VFLTrainer(ModelTrainer):
             if args.marvell:
                 grad_output_bottom_model_b = marvell_g(grad_output_bottom_model_b, target)
                 # U_B_gradients_list = marvell_g(U_B_gradients_list, target)
-            # ----yjr-----
+
             # gradient compression
             if args.gc:
                 U_B_gradients_list = gradient_compression(U_B_gradients_list, preserved_perc=args.gc_ratio)
