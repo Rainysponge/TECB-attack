@@ -6,7 +6,8 @@ import torchvision.transforms as transforms
 from sklearn import metrics
 from .solver import solve_isotropic_covariance, symKL_objective
 import math
-import ruamel.yaml as yaml
+# import ruamel.yaml as yaml
+from ruamel.yaml import YAML
 import torch.nn as nn
 
 
@@ -272,8 +273,10 @@ def over_write_args_from_file(args, yml):
     """
     if yml == '':
         return
+    yaml = YAML(typ='rt')
     with open(yml, 'r', encoding='utf-8') as f:
-        dic = yaml.load(f.read(), Loader=yaml.Loader)
+        # dic = yaml.load(f.read(), Loader=yaml.Loader)
+        dic = yaml.load(f)
         for k in dic:
             setattr(args, k, dic[k])
 

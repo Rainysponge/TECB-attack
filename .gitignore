@@ -1,4 +1,6 @@
 data/
+log_save/
 .idea/
 *.xml
 *.iml
+/**/__pycache__/
